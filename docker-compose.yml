@@ -1,0 +1,45 @@
+# Reproducible research stack for AI in Quantum Technologies.
+#
+#   docker compose up -d
+#   API     -> http://localhost:8000   (interactive docs at /docs)
+#   Jupyter -> http://localhost:8888   (token: quantum)
+#   MLflow  -> http://localhost:5000
+services:
+  api:
+    build: .
+    image: dascient/ai-quantum-api:latest
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  jupyter:
+    build: .
+    image: dascient/ai-quantum-api:latest
+    command: >
+      jupyter lab --ip=0.0.0.0 --port=8888 --no-browser
+      --IdentityProvider.token=quantum --allow-root
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/app
+    restart: unless-stopped
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    command: >
+      mlflow server --host 0.0.0.0 --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    restart: unless-stopped
+
+volumes:
+  mlflow-data:
