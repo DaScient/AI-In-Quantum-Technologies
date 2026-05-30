@@ -90,4 +90,6 @@ nav:
           - 22. Co-Evolution of AI & Quantum Hardware: chapters/ch22.md
           - 23. Open Questions & Fundamental Limits: chapters/ch23.md
           - 24. Toward a Quantum-Native Intelligence: chapters/ch24.md
+      - "Back Matter":
+          - Capstones & Workshops: chapters/capstones.md
   - Contributing: contributing.md
