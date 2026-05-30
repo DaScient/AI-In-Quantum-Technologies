@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aiquantum"
+version = "0.1.0"
+description = "AI in Quantum Technologies — the code-first companion library to the DaScient Press textbook."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "CC-BY-NC-SA-4.0" }
+authors = [
+    { name = "Don D. M. Tadaya", email = "press@dascient.com" },
+    { name = "DaScient Intelligence Academy", email = "support@dascient.com" },
+]
+keywords = [
+    "quantum computing",
+    "machine learning",
+    "quantum machine learning",
+    "artificial intelligence",
+    "quantum error correction",
+    "quantum chemistry",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pydantic>=2.5",
+]
+
+[project.urls]
+Homepage = "https://dascient.github.io/ai-in-quantum-technologies"
+Documentation = "https://dascient.github.io/ai-in-quantum-technologies"
+Repository = "https://github.com/DaScient/AI-In-Quantum-Technologies"
+Issues = "https://github.com/DaScient/AI-In-Quantum-Technologies/issues"
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.9",
+]
+quantum = [
+    "qiskit>=1.0",
+    "pennylane>=0.35",
+    "cirq>=1.3",
+    "stim>=1.12",
+]
+ml = [
+    "torch>=2.1",
+    "scikit-learn>=1.3",
+]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.24",
+]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "httpx>=0.26",
+    "ruff>=0.3",
+    "black>=24.0",
+]
+all = [
+    "aiquantum[api,quantum,ml,docs,dev]",
+]
+
+[project.scripts]
+aiquantum-api = "aiquantum.api.app:run"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
