@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "AI in Quantum Technologies: Theory, Applications, Practice, and Society"
+message: "If you use this repository, please cite the accompanying textbook."
+type: book
+authors:
+  - family-names: Tadaya
+    given-names: Don D. M.
+    affiliation: DaScient Intelligence Academy
+repository-code: "https://github.com/DaScient/AI-In-Quantum-Technologies"
+url: "https://dascient.github.io/ai-in-quantum-technologies"
+license: CC-BY-NC-SA-4.0
+year: 2026
+publisher:
+  name: DaScient Press
+preferred-citation:
+  type: book
+  title: "AI in Quantum Technologies: Theory, Applications, Practice, and Society"
+  authors:
+    - family-names: Tadaya
+      given-names: Don D. M.
+  year: 2026
+  publisher:
+    name: DaScient Press

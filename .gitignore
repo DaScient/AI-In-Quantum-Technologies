@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Docs
+site/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Data & models (large artefacts kept out of git)
+*.ckpt
+*.pt
+*.h5
+data/raw/

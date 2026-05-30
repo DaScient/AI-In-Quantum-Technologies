@@ -1,0 +1,93 @@
+site_name: AI in Quantum Technologies
+site_description: The code-first companion to the DaScient Press textbook.
+site_url: https://dascient.github.io/ai-in-quantum-technologies
+repo_url: https://github.com/DaScient/AI-In-Quantum-Technologies
+repo_name: DaScient/AI-In-Quantum-Technologies
+copyright: "© 2026 DaScient Intelligence Academy — CC BY-NC-SA 4.0"
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_source: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - API Reference: api.md
+  - Datasets: datasets.md
+  - Tutorials: tutorials.md
+  - Textbook:
+      - Overview: chapters/index.md
+      - "Part I — Foundations":
+          - 1. Quantum Mechanics as Information Science: chapters/ch01.md
+          - 2. AI Paradigms for Quantum Discovery: chapters/ch02.md
+          - 3. Mathematical & Computational Toolbox: chapters/ch03.md
+      - "Part II — Quantum Data Across Scales":
+          - 4. Representing Quantum States & Processes: chapters/ch04.md
+          - 5. Datasets from Quantum Experiments: chapters/ch05.md
+          - 6. Noise, Decoherence & Imperfections: chapters/ch06.md
+      - "Part III — AI for Quantum Devices":
+          - 7. Quantum Optimal Control: chapters/ch07.md
+          - 8. Quantum Error Correction & Mitigation: chapters/ch08.md
+          - 9. Quantum Metrology & Sensing: chapters/ch09.md
+      - "Part IV — AI for Quantum Matter":
+          - 10. Quantum Chemistry & Molecular Design: chapters/ch10.md
+          - 11. Quantum Materials Discovery: chapters/ch11.md
+          - 12. Many-Body Physics & Tensor Networks: chapters/ch12.md
+      - "Part V — Quantum Information & Communication":
+          - 13. Quantum Cryptography & Security: chapters/ch13.md
+          - 14. Quantum Networks & Repeaters: chapters/ch14.md
+          - 15. Quantum Algorithms & Complexity: chapters/ch15.md
+      - "Part VI — Quantum ML & Hybrid Systems":
+          - 16. Quantum Machine Learning Fundamentals: chapters/ch16.md
+          - 17. Variational Quantum Algorithms: chapters/ch17.md
+          - 18. Quantum-Classical Hybrid Computing: chapters/ch18.md
+      - "Part VII — Ethics, Policy & Society":
+          - 19. Ethical Dimensions of Quantum AI: chapters/ch19.md
+          - 20. Governance & Standards: chapters/ch20.md
+          - 21. Workforce, Equity & Geopolitics: chapters/ch21.md
+      - "Part VIII — Horizons":
+          - 22. Co-Evolution of AI & Quantum Hardware: chapters/ch22.md
+          - 23. Open Questions & Fundamental Limits: chapters/ch23.md
+          - 24. Toward a Quantum-Native Intelligence: chapters/ch24.md
+  - Contributing: contributing.md
