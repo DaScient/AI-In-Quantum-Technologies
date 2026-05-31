@@ -1,5 +1,7 @@
 # AI in Quantum Technologies
 
+![AI in Quantum Technologies — Cover](assets/cover.jpeg){ width="100%" }
+
 > *"Do you really believe the moon is only there when you look at it?"* — Albert Einstein
 
 Welcome to the living documentation for **AI in Quantum Technologies: Theory,
