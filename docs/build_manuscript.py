@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Compile the AI in Biological Sciences textbook into a single styled ``.docx``.
+"""Compile the AI in Quantum Technologies textbook into a single styled ``.docx``.
 
-This tool reads the chapter Markdown sources under ``docs/source`` in the order
+This tool reads the chapter Markdown sources under ``docs/chapters`` in the order
 declared by the MkDocs ``nav`` (preserving the "Part" groupings) and renders a
 publication-ready Microsoft Word manuscript suitable for the DaScient, Inc.
 textbook processing pipeline.
@@ -19,8 +19,8 @@ in the final values without touching the body content.
 
 Usage
 -----
-    python tools/build_manuscript.py
-    python tools/build_manuscript.py --output build/manuscript/AI_in_Biological_Sciences.docx
+    python docs/build_manuscript.py
+    python docs/build_manuscript.py --output build/manuscript/AI_in_Quantum_Technologies.docx
 
 The script only depends on ``python-docx`` (already part of the docs toolchain
 when installed) and ``PyYAML``.
@@ -48,19 +48,20 @@ from docx.shared import Pt, RGBColor
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MKDOCS_YML = REPO_ROOT / "mkdocs.yml"
-DOCS_DIR = REPO_ROOT / "docs" / "source"
-DEFAULT_OUTPUT = REPO_ROOT / "manuscript" / "AI_in_Biological_Sciences.docx"
+DOCS_DIR = REPO_ROOT / "docs"
+DEFAULT_OUTPUT = REPO_ROOT / "manuscript" / "AI_in_Quantum_Technologies.docx"
 
 # Front-matter values the publisher (DaScient, Inc.) fills in later.
 TBD = "[TBD - DaScient, Inc.]"
 
-BOOK_TITLE = "AI in Biological Sciences"
+BOOK_TITLE = "AI in Quantum Technologies"
 BOOK_SUBTITLE = "Theory, Applications, Practice, and Society"
-BOOK_AUTHORS = "Dr. Aris Thorne \u00b7 Wei Chen \u00b7 Marcus Adebayo"
+# Author/editor credits are supplied by the publisher at production time.
+BOOK_AUTHORS = TBD
 PUBLISHER = "DaScient Press"
 
-# Visual palette (matches the MkDocs Material teal/cyan theme).
-TEAL = RGBColor(0x00, 0x69, 0x5C)
+# Visual palette (matches the MkDocs Material indigo/deep-purple theme).
+BRAND = RGBColor(0x3F, 0x51, 0xB5)
 CODE_BG = "F2F4F3"
 CODE_FONT = "Consolas"
 BODY_FONT = "Calibri"
@@ -101,20 +102,31 @@ def _load_mkdocs_nav() -> list[dict]:
 
 
 def collect_chapters() -> list[ChapterRef]:
-    """Return the ordered list of chapters with their Part groupings."""
+    """Return the ordered list of chapters with their Part groupings.
+
+    The textbook lives under the ``Textbook`` entry of the MkDocs ``nav``. It
+    mixes standalone pages (e.g. the *Overview*) with "Part" groups that each
+    contain several chapters, plus a *Back Matter* group. Every page referenced
+    there resolves to a Markdown file under ``docs/chapters`` and is included in
+    the compiled manuscript.
+    """
     nav = _load_mkdocs_nav()
     chapters: list[ChapterRef] = []
 
     for entry in nav:
-        if not isinstance(entry, dict) or "Chapters" not in entry:
+        if not isinstance(entry, dict) or "Textbook" not in entry:
             continue
-        for part_block in entry["Chapters"]:
-            if not isinstance(part_block, dict):
+        for block in entry["Textbook"]:
+            if not isinstance(block, dict):
                 continue
-            for part_name, items in part_block.items():
-                for item in items:
-                    rel = item if isinstance(item, str) else next(iter(item.values()))
-                    chapters.append(ChapterRef(part=part_name, path=DOCS_DIR / rel))
+            for name, value in block.items():
+                if isinstance(value, str):
+                    # Standalone page (e.g. the Overview): no Part divider.
+                    chapters.append(ChapterRef(part="", path=DOCS_DIR / value))
+                elif isinstance(value, list):
+                    for item in value:
+                        rel = item if isinstance(item, str) else next(iter(item.values()))
+                        chapters.append(ChapterRef(part=name, path=DOCS_DIR / rel))
     return chapters
 
 
@@ -363,7 +375,7 @@ def _add_heading(doc: Document, block: Block) -> None:
         run = para.add_run(block.text)
         run.bold = True
         run.font.size = Pt(22)
-        run.font.color.rgb = TEAL
+        run.font.color.rgb = BRAND
         return
     heading = doc.add_heading(level=min(block.level, 4))
     add_inline(heading, block.text)
@@ -391,10 +403,10 @@ def add_front_matter(doc: Document) -> None:
     # --- Title page ---
     for _ in range(4):
         doc.add_paragraph()
-    _centered(doc, BOOK_TITLE, size=32, bold=True, color=TEAL, space_after=4)
+    _centered(doc, BOOK_TITLE, size=32, bold=True, color=BRAND, space_after=4)
     _centered(doc, BOOK_SUBTITLE, size=16, space_after=24)
     _centered(doc, BOOK_AUTHORS, size=13, space_after=6)
-    _centered(doc, PUBLISHER, size=12, color=TEAL, space_after=0)
+    _centered(doc, PUBLISHER, size=12, color=BRAND, space_after=0)
 
     # --- Copyright page ---
     doc.add_page_break()
@@ -415,7 +427,7 @@ def add_front_matter(doc: Document) -> None:
         "",
         f"Published by {PUBLISHER}.",
         "Manuscript compiled automatically from the repository sources via "
-        "tools/build_manuscript.py.",
+        "docs/build_manuscript.py.",
         f"Generated: {_dt.date.today().isoformat()}",
     ]
     for text in copyright_lines:
@@ -467,7 +479,7 @@ def add_part_divider(doc: Document, part_name: str) -> None:
     doc.add_page_break()
     for _ in range(6):
         doc.add_paragraph()
-    _centered(doc, part_name, size=26, bold=True, color=TEAL, space_after=0)
+    _centered(doc, part_name, size=26, bold=True, color=BRAND, space_after=0)
 
 
 # --------------------------------------------------------------------------- #
@@ -513,7 +525,7 @@ def build(output: Path) -> tuple[Path, int]:
 
     current_part: str | None = None
     for chapter in chapters:
-        if chapter.part != current_part:
+        if chapter.part and chapter.part != current_part:
             add_part_divider(doc, chapter.part)
             current_part = chapter.part
         if not chapter.path.exists():

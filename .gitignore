@@ -22,6 +22,7 @@ coverage.xml
 
 # Docs
 site/
+manuscript/
 
 # OS / editor
 .DS_Store
