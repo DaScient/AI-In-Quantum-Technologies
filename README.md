@@ -187,3 +187,7 @@ This work is licensed under a Creative Commons Attribution‑NonCommercial‑Sha
 - **API Access:** quantumapi@dascient.com
 - **Textbook & Academic Inquiries:** press@dascient.com
 - **LinkedIn:** https://linkedin.com/company/DaScient
+
+<sub>Support this project: [Donations](https://cash.app/dascient/).</sub>
+
+<sub>This supports DaScient, Inc. — a non-profit organization promoting accessible intelligence and community learning through diverse mediums and platforms.</sub>
